@@ -1,6 +1,7 @@
 module.exports = {
   title: "shadow",
   description: "Just playing around",
+  base: "/blob/",
   themeConfig: {
     sidebar: [
       {
@@ -32,6 +33,10 @@ module.exports = {
           {
             title: "vue2watch源码解析",
             path: "/blob/vue/vue2-watch",
+          },
+          {
+            title: "vue2$set源码解析",
+            path: "/blob/vue/vue2-$set",
           },
         ],
       },
