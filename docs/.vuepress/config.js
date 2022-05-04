@@ -53,6 +53,10 @@ module.exports = {
             title: "团队代码规范",
             path: "/blog/daily/team-rule",
           },
+          {
+            title: "团队代码规范",
+            path: "/blog/daily/vue+docker+jenkins",
+          },
         ],
       },
     ],
