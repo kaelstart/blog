@@ -1,7 +1,7 @@
 module.exports = {
   title: "shadow",
   description: "Just playing around",
-  base: "/",
+  base: "/blob/",
   themeConfig: {
     sidebar: [
       {
