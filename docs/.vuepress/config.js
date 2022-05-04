@@ -54,7 +54,7 @@ module.exports = {
             path: "/blob/daily/team-rule",
           },
           {
-            title: "团队代码规范",
+            title: "vue+docker+jenkins自动化部署",
             path: "/blob/daily/vue+docker+jenkins",
           },
         ],
