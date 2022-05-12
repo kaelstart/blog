@@ -38,6 +38,10 @@ module.exports = {
             title: "vue2$set源码解析",
             path: "/blob/vue/vue2-$set",
           },
+          {
+            title: "vue2mixin合并策略解析",
+            path: "/blob/vue/vue2-mixin",
+          },
         ],
       },
       {
