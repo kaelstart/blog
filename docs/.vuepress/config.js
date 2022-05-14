@@ -61,6 +61,10 @@ module.exports = {
             title: "vue+docker+jenkins自动化部署",
             path: "/blob/daily/vue+docker+jenkins",
           },
+          {
+            title: "开发工具-whistle",
+            path: "/blob/daily/whistle",
+          },
         ],
       },
     ],
