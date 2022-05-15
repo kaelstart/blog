@@ -16,4 +16,6 @@ git commit -m 'deploy'
 # 如果发布到 https://<USERNAME>.github.io/<REPO>
 git push -f https://github.com/kaelstart/blob.git master:gh-pages
 
+rm -rf dist
+
 cd -

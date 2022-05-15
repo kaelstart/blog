@@ -27,6 +27,10 @@ module.exports = {
         collapsable: false,
         children: [
           {
+            title: "vue2-lifecycle源码解析",
+            path: "/blob/vue/vue2-lifecycle",
+          },
+          {
             title: "vue2computed源码解析",
             path: "/blob/vue/vue2-computed",
           },
