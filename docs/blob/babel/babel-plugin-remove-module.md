@@ -585,9 +585,10 @@ module.exports = {
 };
 ```
 
-总结
+## 总结
 这样的好处是,不需要在代码加一些逻辑判断,只需要通过注释就可以实现在 webpack 打包的时候就把标注了注释的节点给删除掉.以上内容如有错误,请大佬可以指出.
-参考
+
+## 参考
 
 - https://zhuanlan.zhihu.com/p/85915575
 - https://www.cnblogs.com/attilax/p/5963787.html

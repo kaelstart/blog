@@ -303,7 +303,7 @@ function mountComponent(vm, el, hydrating) {
 
 ```js
 /**
- * 接下来是update阶段,这里简略介绍,就拿data中的数据劫持来说.
+ * 接下来是update阶段,这里简略介绍,就拿渲染模版Watcher和data中的数据劫持来说.
  * 当数据变化的时候就会去通知订阅者更新更新变化,从而达到更新的效果
  */
 function defineReactive$$1(obj, key, val, customSetter, shallow) {
@@ -386,7 +386,95 @@ Watcher.prototype.update = function update() {
   } else if (this.sync) {
     this.run();
   } else {
+    // 渲染Watcher走这里
     queueWatcher(this);
+  }
+};
+// queueWatcher
+function queueWatcher(watcher) {
+  var id = watcher.id;
+  if (has[id] == null) {
+    // 这里会判断,如果当前的watcher已经收集进了has中,那么就不会再次收集这个watcher. 比如就像全局的渲染watcher一样
+    // 例子,比如一个组件在data中声明的属性,那么当他走到这里的时候,其实他依赖的全局渲染watcher都是同一个,也就是他不会被重复添加进来.
+    has[id] = true;
+    if (!flushing) {
+      // flushing 如果没有正在更新的情况下
+      queue.push(watcher); // 这个会把watcher推进queue队列
+    } else {
+      var i = queue.length - 1;
+      while (i > index && queue[i].id > watcher.id) {
+        i--;
+      }
+      queue.splice(i + 1, 0, watcher);
+    }
+    // queue the flush
+    if (!waiting) {
+      // waiting 这个为false的时候只有是在默认的的情况下或者说更新完毕了会调用resetSchedulerState来重置状态
+      waiting = true;
+
+      if (!config.async) {
+        flushSchedulerQueue();
+        return;
+      }
+      // 执行nextTick等待更新
+      nextTick(flushSchedulerQueue);
+    }
+  }
+}
+// nextTick
+function nextTick(cb, ctx) {
+  // // debugger;
+  var _resolve;
+  callbacks.push(function () {
+    if (cb) {
+      try {
+        cb.call(ctx);
+      } catch (e) {
+        handleError(e, ctx, "nextTick");
+      }
+    } else if (_resolve) {
+      _resolve(ctx);
+    }
+  });
+  if (!pending) {
+    pending = true;
+    timerFunc();
+  }
+  // $flow-disable-line
+  if (!cb && typeof Promise !== "undefined") {
+    return new Promise(function (resolve) {
+      _resolve = resolve;
+    });
+  }
+}
+// flushSchedulerQueue
+function flushSchedulerQueue() {
+  currentFlushTimestamp = getNow();
+  flushing = true; // 把全局的flushing置为true,表示的是当前正在更新中
+  var watcher, id;
+  // 删除无关代码
+  for (index = 0; index < queue.length; index++) {
+    watcher = queue[index];
+    /**
+     * 这里是执行beforeUpdate
+     */
+    if (watcher.before) {
+      watcher.before();
+    }
+    id = watcher.id;
+    has[id] = null; // 这里会把全局的has里面收集的watcher的id清空,等待下次收集
+    /**
+     * 这里是Watcher.run,也就是重新去更新模版
+     */
+    watcher.run();
+    // ...
+  }
+}
+
+Watcher.prototype.run = function run() {
+  if (this.active) {
+    // 触发getter,重新生成vnode,然后走_update更新
+    var value = this.get();
   }
 };
 ```
@@ -394,8 +482,9 @@ Watcher.prototype.update = function update() {
 ## 总结
 
 根据上面的解析,我们大致可以这样总结:
+
 1. 在 beforeCreate 之前主要做一些 Events 和 lifecycle 的初始化,然后在到生命周期的 beforeCreate,在这个阶段因为还没有进行数据的初始化,所以我们还不能访问数据.
-2. 在beforeCreate和created阶段,主要做一些data,props,method,computed,watch的一些初始化,所以到了created阶段,数据都初始化完毕了,我们可以在这个阶段访问数据了
-3. 在created和beforeMount阶段,主要看是否有render函数,如果有则直接使用,否则拿template模版去生成render函数字符串(这些事vue-loader做的一些事情)
-4. 在beforeMount和mounted阶段,主要调用render函数生成的vnode,然后把把vnode作为调用_update函数的参数进行dom节点的生成.所以在mount阶段我们就可以访问真实的Dom节点了
-5. 在更新阶段,通过数据的劫持的setter,通知该属性(也就是当前的观察者)的订阅者进行更新
+2. 在 beforeCreate 和 created 阶段,主要做一些 data,props,method,computed,watch 的一些初始化,所以到了 created 阶段,数据都初始化完毕了,我们可以在这个阶段访问数据了
+3. 在 created 和 beforeMount 阶段,主要看是否有 render 函数,如果有则直接使用,否则拿 template 模版去生成 render 函数字符串(这些事 vue-loader 做的一些事情)
+4. 在 beforeMount 和 mounted 阶段,主要调用 render 函数生成的 vnode,然后把把 vnode 作为调用\_update 函数的参数进行 dom 节点的生成.所以在 mount 阶段我们就可以访问真实的 Dom 节点了
+5. 在更新阶段,通过数据的劫持的 setter,通知该属性(也就是当前的观察者)的订阅者进行更新

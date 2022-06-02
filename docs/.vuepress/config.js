@@ -16,8 +16,12 @@ module.exports = {
         collapsable: false,
         children: [
           {
-            title: "babel-plugin-remove-development",
-            path: "/blob/babel/babel-plugin-remove-development",
+            title: "babel-plugin-remove-module",
+            path: "/blob/babel/babel-plugin-remove-module",
+          },
+          {
+            title: "babel-plugin-auto-report-error",
+            path: "/blob/babel/babel-plugin-auto-report-error",
           },
         ],
       },
