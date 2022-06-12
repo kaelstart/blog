@@ -58,6 +58,10 @@ module.exports = {
         collapsable: false,
         children: [
           {
+            title: "webpack打包优化",
+            path: "/blob/daily/build-optimization",
+          },
+          {
             title: "控制重复请求,并返回同段时间内的请求结果",
             path: "/blob/daily/control-request",
           },
