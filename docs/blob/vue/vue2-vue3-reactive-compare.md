@@ -441,6 +441,91 @@ function flushSchedulerQueue() {
 ## vue3 流程
 
 ```js
+// ---以下面例子讲解start---
+const state = reactive({
+  info: {
+    name: "shadow",
+  },
+});
+// ---end---
+
+function reactive(target) {
+  // if trying to observe a readonly proxy, return the readonly version.
+  if (target && target["__v_isReadonly" /* IS_READONLY */]) {
+    return target;
+  }
+  return createReactiveObject(
+    target,
+    false,
+    mutableHandlers,
+    mutableCollectionHandlers
+  );
+}
+
+function createReactiveObject(
+  target,
+  isReadonly,
+  baseHandlers,
+  collectionHandlers
+) {
+  // 判断是否是对象
+  if (!isObject(target)) {
+    {
+      console.warn(`value cannot be made reactive: ${String(target)}`);
+    }
+    return target;
+  }
+  // target is already a Proxy, return it.
+  // exception: calling readonly() on a reactive object
+  // 判断是否是已经代理过的属性
+  if (
+    target["__v_raw" /* RAW */] &&
+    !(isReadonly && target["__v_isReactive" /* IS_REACTIVE */])
+  ) {
+    return target;
+  }
+  // target already has corresponding Proxy
+  // reactive代理的属性, isReadonly = false
+  const proxyMap = isReadonly ? readonlyMap : reactiveMap;
+  const existingProxy = proxyMap.get(target);
+  // 判断该属性是否被重复代理
+  if (existingProxy) {
+    return existingProxy;
+  }
+  /**
+    case "Object":
+    case "Array":
+      return 1
+    case "Map":
+    case "Set":
+    case "WeakMap":
+    case "WeakSet":
+      return 2 
+    default:
+    return 0 
+  */
+  const targetType = getTargetType(target);
+  if (targetType === 0 /* INVALID */) {
+    return target;
+  }
+  // 因为我们这次讲解的是对象,所以targetType = 1,所对应的是 baseHandlers = mutableHandlers
+  const proxy = new Proxy(
+    target,
+    targetType === 2 /* COLLECTION */ ? collectionHandlers : baseHandlers
+  );
+  proxyMap.set(target, proxy);
+  return proxy;
+}
+const get = /*#__PURE__*/ createGetter();
+const set = /*#__PURE__*/ createSetter();
+const mutableHandlers = {
+  get,
+  set,
+  deleteProperty,
+  has,
+  ownKeys,
+};
+
 function createGetter(isReadonly = false, shallow = false) {
   return function get(target, key, receiver) {
     // ... 删除无关代码
@@ -464,6 +549,7 @@ function createGetter(isReadonly = false, shallow = false) {
   };
 }
 const targetMap = new WeakMap(); // 全局变量
+let activeEffect; // 全局变量
 function track(target, type, key) {
   // ...删除无关代码
   /**
@@ -471,7 +557,7 @@ function track(target, type, key) {
    */
   let depsMap = targetMap.get(target);
   if (!depsMap) {
-    // 如果没有,设置一次,值是一个map集合
+    // 如果没有,设置一次,key是目标对象,值是一个map集合
     targetMap.set(target, (depsMap = new Map()));
   }
   // map集合当前再去获取当前的key值
@@ -486,18 +572,11 @@ function track(target, type, key) {
    */
   if (!dep.has(activeEffect)) {
     // 观察者收集订阅者
-    `1.2`;
+    `1.1`;
     dep.add(activeEffect);
     // 订阅者也收集观察者
+    `1.2`;
     activeEffect.deps.push(dep);
-    if (activeEffect.options.onTrack) {
-      activeEffect.options.onTrack({
-        effect: activeEffect,
-        target,
-        type,
-        key,
-      });
-    }
   }
 }
 
@@ -521,10 +600,156 @@ function createSetter(shallow = false) {
       if (!hadKey) {
         trigger(target, "add" /* ADD */, key, value);
       } else if (hasChanged(value, oldValue)) {
+        `1.1`;
         trigger(target, "set" /* SET */, key, value, oldValue);
       }
     }
     return result;
   };
 }
+
+function trigger(target, type, key, newValue, oldValue, oldTarget) {
+  const depsMap = targetMap.get(target);
+  if (!depsMap) {
+    // never been tracked
+    return;
+  }
+  const effects = new Set();
+  const add = (effectsToAdd) => {
+    if (effectsToAdd) {
+      effectsToAdd.forEach((effect) => {
+        if (effect !== activeEffect || effect.allowRecurse) {
+          effects.add(effect);
+        }
+      });
+    }
+  };
+  if (type === "clear" /* CLEAR */) {
+    // collection being cleared
+    // trigger all effects for target
+    depsMap.forEach(add);
+  } else if (key === "length" && isArray(target)) {
+    depsMap.forEach((dep, key) => {
+      if (key === "length" || key >= newValue) {
+        add(dep);
+      }
+    });
+  } else {
+    // schedule runs for SET | ADD | DELETE
+    if (key !== void 0) {
+      `1.2`,
+        // 把当前的观察者的收集的依赖列表添加到effects中
+        add(depsMap.get(key));
+    }
+    // 删除无关代码
+  }
+  const run = (effect) => {
+    if (effect.options.onTrigger) {
+      effect.options.onTrigger({
+        effect,
+        target,
+        key,
+        type,
+        newValue,
+        oldValue,
+        oldTarget,
+      });
+    }
+    if (effect.options.scheduler) {
+      `1.3`;
+      // 调用scheduler = queueJob
+      effect.options.scheduler(effect);
+    } else {
+      effect();
+    }
+  };
+  effects.forEach(run);
+}
+const queue = []; // 全局属性
+const resolvedPromise = Promise.resolve();
+function queueJob(job) {
+  // the dedupe search uses the startIndex argument of Array.includes()
+  // by default the search index includes the current job that is being run
+  // so it cannot recursively trigger itself again.
+  // if the job is a watch() callback, the search will start with a +1 index to
+  // allow it recursively trigger itself - it is the user's responsibility to
+  // ensure it doesn't end up in an infinite loop.
+  if (
+    (!queue.length ||
+      !queue.includes(
+        job,
+        isFlushing && job.allowRecurse ? flushIndex + 1 : flushIndex
+      )) &&
+    job !== currentPreFlushParentJob
+  ) {
+    queue.push(job);
+    `1.4`;
+    queueFlush();
+  }
+}
+
+function queueFlush() {
+  if (!isFlushing && !isFlushPending) {
+    isFlushPending = true;
+    `1.5`;
+    // 和vue2中相同,调用的是Promise.resolve
+    currentFlushPromise = resolvedPromise.then(flushJobs);
+  }
+}
+
+function flushJobs(seen) {
+  isFlushPending = false;
+  isFlushing = true;
+  {
+    seen = seen || new Map();
+  }
+  flushPreFlushCbs(seen);
+  // Sort queue before flush.
+  // This ensures that:
+  // 1. Components are updated from parent to child. (because parent is always
+  //    created before the child so its render effect will have smaller
+  //    priority number)
+  // 2. If a component is unmounted during a parent component's update,
+  //    its update can be skipped.
+  // Jobs can never be null before flush starts, since they are only invalidated
+  // during execution of another flushed job.
+  queue.sort((a, b) => getId(a) - getId(b));
+  try {
+    for (flushIndex = 0; flushIndex < queue.length; flushIndex++) {
+      const job = queue[flushIndex];
+      if (job) {
+        if (true) {
+          checkRecursiveUpdates(seen, job);
+        }
+        `1.6`
+        // 更新
+        callWithErrorHandling(job, null, 14 /* SCHEDULER */);
+      }
+    }
+  } finally {
+    flushIndex = 0;
+    queue.length = 0;
+    flushPostFlushCbs(seen);
+    isFlushing = false;
+    currentFlushPromise = null;
+    // some postFlushCb queued jobs!
+    // keep flushing until it drains.
+    if (queue.length || pendingPostFlushCbs.length) {
+      flushJobs(seen);
+    }
+  }
+}
 ```
+
+数据收集依赖的流程,我们可以按照数字符号的顺序来看
+
+- 1.0 track(target, "get" /_ GET _/, key) 开始收集依赖
+- 1.1 dep.add(activeEffect) 观察者收集订阅者
+- 1.2 activeEffect.deps.push(dep);
+- 这样完成了依赖着的收集
+
+---
+
+通知订阅者的更新
+
+未完待续...

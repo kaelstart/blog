@@ -50,6 +50,10 @@ module.exports = {
             title: "vue2mixin合并策略解析",
             path: "/blob/vue/vue2-mixin",
           },
+          {
+            title: "vue2/vue3响应式变更对比",
+            path: "/blob/vue/vue2-vue3-reactive-compare",
+          },
         ],
       },
       {
