@@ -83,6 +83,17 @@ module.exports = {
           },
         ],
       },
+       {
+        title: "ai",
+        path: "/blob/ai",
+        collapsable: false,
+        children: [
+          {
+            title: "开发mcp server",
+            path: "/blob/ai/mcpServer",
+          },
+        ],
+      },
     ],
   },
 };
