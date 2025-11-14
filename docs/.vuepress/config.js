@@ -1,96 +1,96 @@
 module.exports = {
   title: "shadow",
   description: "Just playing around",
-  base: "/blob/",
+  base: "/blog/",
   themeConfig: {
     sidebar: [
       {
         title: "element相关",
-        path: "/blob/element/element",
+        path: "/blog/element/element",
         collapsable: false,
-        children: [{ title: "穿透更改element", path: "/blob/element/element" }],
+        children: [{ title: "穿透更改element", path: "/blog/element/element" }],
       },
       {
         title: "babel相关",
-        path: "/blob/babel",
+        path: "/blog/babel",
         collapsable: false,
         children: [
           {
             title: "babel-plugin-remove-module",
-            path: "/blob/babel/babel-plugin-remove-module",
+            path: "/blog/babel/babel-plugin-remove-module",
           },
           {
             title: "babel-plugin-auto-report-error",
-            path: "/blob/babel/babel-plugin-auto-report-error",
+            path: "/blog/babel/babel-plugin-auto-report-error",
           },
         ],
       },
       {
         title: "vue源码相关",
-        path: "/blob/vue",
+        path: "/blog/vue",
         collapsable: false,
         children: [
           {
             title: "vue2-lifecycle源码解析",
-            path: "/blob/vue/vue2-lifecycle",
+            path: "/blog/vue/vue2-lifecycle",
           },
           {
             title: "vue2computed源码解析",
-            path: "/blob/vue/vue2-computed",
+            path: "/blog/vue/vue2-computed",
           },
           {
             title: "vue2watch源码解析",
-            path: "/blob/vue/vue2-watch",
+            path: "/blog/vue/vue2-watch",
           },
           {
             title: "vue2$set源码解析",
-            path: "/blob/vue/vue2-$set",
+            path: "/blog/vue/vue2-$set",
           },
           {
             title: "vue2mixin合并策略解析",
-            path: "/blob/vue/vue2-mixin",
+            path: "/blog/vue/vue2-mixin",
           },
           {
             title: "vue2/vue3响应式变更对比",
-            path: "/blob/vue/vue2-vue3-reactive-compare",
+            path: "/blog/vue/vue2-vue3-reactive-compare",
           },
         ],
       },
       {
         title: "日常记录",
-        path: "/blob/daily",
+        path: "/blog/daily",
         collapsable: false,
         children: [
           {
             title: "webpack打包优化",
-            path: "/blob/daily/build-optimization",
+            path: "/blog/daily/build-optimization",
           },
           {
             title: "控制重复请求,并返回同段时间内的请求结果",
-            path: "/blob/daily/control-request",
+            path: "/blog/daily/control-request",
           },
           {
             title: "团队代码规范",
-            path: "/blob/daily/team-rule",
+            path: "/blog/daily/team-rule",
           },
           {
             title: "vue+docker+jenkins自动化部署",
-            path: "/blob/daily/vue+docker+jenkins",
+            path: "/blog/daily/vue+docker+jenkins",
           },
           {
             title: "开发工具-whistle",
-            path: "/blob/daily/whistle",
+            path: "/blog/daily/whistle",
           },
         ],
       },
        {
         title: "ai",
-        path: "/blob/ai",
+        path: "/blog/ai",
         collapsable: false,
         children: [
           {
             title: "开发mcp server",
-            path: "/blob/ai/mcpServer",
+            path: "/blog/ai/mcpServer",
           },
         ],
       },
