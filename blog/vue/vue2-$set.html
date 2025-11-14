@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>$set 源码解析 | shadow</title>
+    <meta name="generator" content="VuePress 1.9.7">
+    
+    <meta name="description" content="Just playing around">
+    
+    <link rel="preload" href="/blog/assets/css/0.styles.0b1ac558.css" as="style"><link rel="preload" href="/blog/assets/js/app.faaa4d6f.js" as="script"><link rel="preload" href="/blog/assets/js/2.50ac7f95.js" as="script"><link rel="preload" href="/blog/assets/js/18.c318f18c.js" as="script"><link rel="prefetch" href="/blog/assets/js/10.d206cb63.js"><link rel="prefetch" href="/blog/assets/js/11.e907298b.js"><link rel="prefetch" href="/blog/assets/js/12.136eb064.js"><link rel="prefetch" href="/blog/assets/js/13.3e9ac2b3.js"><link rel="prefetch" href="/blog/assets/js/14.eb559736.js"><link rel="prefetch" href="/blog/assets/js/15.beccba6e.js"><link rel="prefetch" href="/blog/assets/js/16.af5150ff.js"><link rel="prefetch" href="/blog/assets/js/17.dbf952d1.js"><link rel="prefetch" href="/blog/assets/js/19.42fddf42.js"><link rel="prefetch" href="/blog/assets/js/20.a057d148.js"><link rel="prefetch" href="/blog/assets/js/21.3b99ccf6.js"><link rel="prefetch" href="/blog/assets/js/22.ef7b4cd0.js"><link rel="prefetch" href="/blog/assets/js/23.e3a34ba1.js"><link rel="prefetch" href="/blog/assets/js/3.6eb4007c.js"><link rel="prefetch" href="/blog/assets/js/4.1b609518.js"><link rel="prefetch" href="/blog/assets/js/5.9e2f4ca7.js"><link rel="prefetch" href="/blog/assets/js/6.c7b54f12.js"><link rel="prefetch" href="/blog/assets/js/7.8a5eaf01.js"><link rel="prefetch" href="/blog/assets/js/8.bfde39e2.js"><link rel="prefetch" href="/blog/assets/js/9.7d91f5cb.js">
+    <link rel="stylesheet" href="/blog/assets/css/0.styles.0b1ac558.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/blog/" class="home-link router-link-active"><!----> <span class="site-name">shadow</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <!----></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><!---->  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><a href="/blog/blog/element/element" class="sidebar-heading clickable"><span>element相关</span> <!----></a> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog/blog/element/element.html" class="sidebar-link">穿透更改element</a></li></ul></section></li><li><section class="sidebar-group depth-0"><a href="/blog/blog/babel" class="sidebar-heading clickable"><span>babel相关</span> <!----></a> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog/blog/babel/babel-plugin-remove-module.html" class="sidebar-link">babel-plugin-remove-module</a></li><li><a href="/blog/blog/babel/babel-plugin-auto-report-error.html" class="sidebar-link">babel-plugin-auto-report-error</a></li></ul></section></li><li><section class="sidebar-group depth-0"><a href="/blog/blog/vue" class="sidebar-heading clickable router-link-active open"><span>vue源码相关</span> <!----></a> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog/blog/vue/vue2-lifecycle.html" class="sidebar-link">vue2-lifecycle源码解析</a></li><li><a href="/blog/blog/vue/vue2-computed.html" class="sidebar-link">vue2computed源码解析</a></li><li><a href="/blog/blog/vue/vue2-watch.html" class="sidebar-link">vue2watch源码解析</a></li><li><a href="/blog/blog/vue/vue2-$set.html" aria-current="page" class="active sidebar-link">vue2$set源码解析</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/blog/blog/vue/vue2-$set.html#set-源码解析" class="sidebar-link">$set 源码解析</a></li></ul></li><li><a href="/blog/blog/vue/vue2-mixin.html" class="sidebar-link">vue2mixin合并策略解析</a></li><li><a href="/blog/blog/vue/vue2-vue3-reactive-compare.html" class="sidebar-link">vue2/vue3响应式变更对比</a></li></ul></section></li><li><section class="sidebar-group depth-0"><a href="/blog/blog/daily" class="sidebar-heading clickable"><span>日常记录</span> <!----></a> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog/blog/daily/build-optimization.html" class="sidebar-link">webpack打包优化</a></li><li><a href="/blog/blog/daily/control-request.html" class="sidebar-link">控制重复请求,并返回同段时间内的请求结果</a></li><li><a href="/blog/blog/daily/team-rule.html" class="sidebar-link">团队代码规范</a></li><li><a href="/blog/blog/daily/vue+docker+jenkins.html" class="sidebar-link">vue+docker+jenkins自动化部署</a></li><li><a href="/blog/blog/daily/whistle.html" class="sidebar-link">开发工具-whistle</a></li></ul></section></li><li><section class="sidebar-group depth-0"><a href="/blog/blog/ai" class="sidebar-heading clickable"><span>ai</span> <!----></a> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog/blog/ai/mcpServer.html" class="sidebar-link">开发mcp server</a></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h2 id="set-源码解析"><a href="#set-源码解析" class="header-anchor">#</a> $set 源码解析</h2> <h3 id="set-的功能是什么"><a href="#set-的功能是什么" class="header-anchor">#</a> $set 的功能是什么</h3> <p>官方解读: 向响应式对象中添加一个 property，并确保这个新 property 同样是响应式的，且触发视图更新。它必须用于向响应式对象上添加新 property，因为 Vue 无法探测普通的新增 property (比如 this.myObject.newProperty = 'hi')</p> <h3 id="流程"><a href="#流程" class="header-anchor">#</a> 流程</h3> <div class="language-js extra-class"><pre class="language-js"><code><span class="token comment">/**
+ * target {Object | Array} 目标对象
+ * key {string | number} 设置键值
+ * val {any} 值
+ */</span>
+<span class="token keyword">function</span> <span class="token function">set</span><span class="token punctuation">(</span><span class="token parameter">target<span class="token punctuation">,</span> key<span class="token punctuation">,</span> val</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isUndef</span><span class="token punctuation">(</span>target<span class="token punctuation">)</span> <span class="token operator">||</span> <span class="token function">isPrimitive</span><span class="token punctuation">(</span>target<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">warn</span><span class="token punctuation">(</span>
+      <span class="token string">&quot;Cannot set reactive property on undefined, null, or primitive value: &quot;</span> <span class="token operator">+</span>
+        target
+    <span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+  <span class="token comment">// 如果是数组,则会进到这里.因为vue对数组的一些方法进行了重写,所以在下面的splice的时候会触发属性的setter</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>Array<span class="token punctuation">.</span><span class="token function">isArray</span><span class="token punctuation">(</span>target<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token function">isValidArrayIndex</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    target<span class="token punctuation">.</span>length <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">max</span><span class="token punctuation">(</span>target<span class="token punctuation">.</span>length<span class="token punctuation">,</span> key<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    target<span class="token punctuation">.</span><span class="token function">splice</span><span class="token punctuation">(</span>key<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> val<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> val<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+  <span class="token comment">// 如果当前设置的key已经存在了并且不在Object的原型上,则会直接设置,并会触发属性的setter</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>key <span class="token keyword">in</span> target <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span><span class="token punctuation">(</span>key <span class="token keyword">in</span> <span class="token class-name">Object</span><span class="token punctuation">.</span>prototype<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    target<span class="token punctuation">[</span>key<span class="token punctuation">]</span> <span class="token operator">=</span> val<span class="token punctuation">;</span>
+    <span class="token keyword">return</span> val<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">var</span> ob <span class="token operator">=</span> target<span class="token punctuation">.</span>__ob__<span class="token punctuation">;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>target<span class="token punctuation">.</span>_isVue <span class="token operator">||</span> <span class="token punctuation">(</span>ob <span class="token operator">&amp;&amp;</span> ob<span class="token punctuation">.</span>vmCount<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">warn</span><span class="token punctuation">(</span>
+      <span class="token string">&quot;Avoid adding reactive properties to a Vue instance or its root $data &quot;</span> <span class="token operator">+</span>
+        <span class="token string">&quot;at runtime - declare it upfront in the data option.&quot;</span>
+    <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> val<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>ob<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    target<span class="token punctuation">[</span>key<span class="token punctuation">]</span> <span class="token operator">=</span> val<span class="token punctuation">;</span>
+    <span class="token keyword">return</span> val<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+  <span class="token comment">// 重新监听这个新的属性</span>
+  <span class="token function">defineReactive$$1</span><span class="token punctuation">(</span>ob<span class="token punctuation">.</span>value<span class="token punctuation">,</span> key<span class="token punctuation">,</span> val<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token comment">// 调用notify,通知dep中的依赖,然后进行更新</span>
+  ob<span class="token punctuation">.</span>dep<span class="token punctuation">.</span><span class="token function">notify</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">return</span> val<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// defineReactive$$1</span>
+<span class="token keyword">function</span> <span class="token function">defineReactive$$1</span><span class="token punctuation">(</span><span class="token parameter">obj<span class="token punctuation">,</span> key<span class="token punctuation">,</span> val<span class="token punctuation">,</span> customSetter<span class="token punctuation">,</span> shallow</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">var</span> dep <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Dep</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">var</span> property <span class="token operator">=</span> Object<span class="token punctuation">.</span><span class="token function">getOwnPropertyDescriptor</span><span class="token punctuation">(</span>obj<span class="token punctuation">,</span> key<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>property <span class="token operator">&amp;&amp;</span> property<span class="token punctuation">.</span>configurable <span class="token operator">===</span> <span class="token boolean">false</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token comment">// cater for pre-defined getter/setters</span>
+  <span class="token keyword">var</span> getter <span class="token operator">=</span> property <span class="token operator">&amp;&amp;</span> property<span class="token punctuation">.</span>get<span class="token punctuation">;</span>
+  <span class="token keyword">var</span> setter <span class="token operator">=</span> property <span class="token operator">&amp;&amp;</span> property<span class="token punctuation">.</span>set<span class="token punctuation">;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token operator">!</span>getter <span class="token operator">||</span> setter<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> arguments<span class="token punctuation">.</span>length <span class="token operator">===</span> <span class="token number">2</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    val <span class="token operator">=</span> obj<span class="token punctuation">[</span>key<span class="token punctuation">]</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">var</span> childOb <span class="token operator">=</span> <span class="token operator">!</span>shallow <span class="token operator">&amp;&amp;</span> <span class="token function">observe</span><span class="token punctuation">(</span>val<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  Object<span class="token punctuation">.</span><span class="token function">defineProperty</span><span class="token punctuation">(</span>obj<span class="token punctuation">,</span> key<span class="token punctuation">,</span> <span class="token punctuation">{</span>
+    <span class="token literal-property property">enumerable</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">configurable</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token function-variable function">get</span><span class="token operator">:</span> <span class="token keyword">function</span> <span class="token function">reactiveGetter</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token comment">// debugger;</span>
+      <span class="token keyword">var</span> value <span class="token operator">=</span> getter <span class="token operator">?</span> <span class="token function">getter</span><span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span> <span class="token operator">:</span> val<span class="token punctuation">;</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>Dep<span class="token punctuation">.</span>target<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        dep<span class="token punctuation">.</span><span class="token function">depend</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>childOb<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          childOb<span class="token punctuation">.</span>dep<span class="token punctuation">.</span><span class="token function">depend</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+          <span class="token keyword">if</span> <span class="token punctuation">(</span>Array<span class="token punctuation">.</span><span class="token function">isArray</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token function">dependArray</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+          <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span>
+      <span class="token keyword">return</span> value<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token function-variable function">set</span><span class="token operator">:</span> <span class="token keyword">function</span> <span class="token function">reactiveSetter</span><span class="token punctuation">(</span><span class="token parameter">newVal</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">var</span> value <span class="token operator">=</span> getter <span class="token operator">?</span> <span class="token function">getter</span><span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span> <span class="token operator">:</span> val<span class="token punctuation">;</span>
+      <span class="token comment">/* eslint-disable no-self-compare */</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>newVal <span class="token operator">===</span> value <span class="token operator">||</span> <span class="token punctuation">(</span>newVal <span class="token operator">!==</span> newVal <span class="token operator">&amp;&amp;</span> value <span class="token operator">!==</span> value<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+      <span class="token comment">/* eslint-enable no-self-compare */</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>customSetter<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">customSetter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+      <span class="token comment">// #7981: for accessor properties without setter</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>getter <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span>setter<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>setter<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">setter</span><span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span>obj<span class="token punctuation">,</span> newVal<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+        val <span class="token operator">=</span> newVal<span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+      childOb <span class="token operator">=</span> <span class="token operator">!</span>shallow <span class="token operator">&amp;&amp;</span> <span class="token function">observe</span><span class="token punctuation">(</span>newVal<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      dep<span class="token punctuation">.</span><span class="token function">notify</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre></div><h3 id="总结-set-就是给目标对象设置一个新的-key-value-并触发视图的更新-并把最后更新的值返回"><a href="#总结-set-就是给目标对象设置一个新的-key-value-并触发视图的更新-并把最后更新的值返回" class="header-anchor">#</a> 总结,$set 就是给目标对象设置一个新的 key/value,并触发视图的更新,并把最后更新的值返回</h3></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/blog/blog/vue/vue2-watch.html" class="prev">
+        vue2watch源码解析
+      </a></span> <span class="next"><a href="/blog/blog/vue/vue2-mixin.html">
+        vue2mixin合并策略解析
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/blog/assets/js/app.faaa4d6f.js" defer></script><script src="/blog/assets/js/2.50ac7f95.js" defer></script><script src="/blog/assets/js/18.c318f18c.js" defer></script>
+  </body>
+</html>

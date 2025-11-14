@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>computed 源码解析 | shadow</title>
+    <meta name="generator" content="VuePress 1.9.7">
+    
+    <meta name="description" content="Just playing around">
+    
+    <link rel="preload" href="/blog/assets/css/0.styles.0b1ac558.css" as="style"><link rel="preload" href="/blog/assets/js/app.faaa4d6f.js" as="script"><link rel="preload" href="/blog/assets/js/2.50ac7f95.js" as="script"><link rel="preload" href="/blog/assets/js/19.42fddf42.js" as="script"><link rel="prefetch" href="/blog/assets/js/10.d206cb63.js"><link rel="prefetch" href="/blog/assets/js/11.e907298b.js"><link rel="prefetch" href="/blog/assets/js/12.136eb064.js"><link rel="prefetch" href="/blog/assets/js/13.3e9ac2b3.js"><link rel="prefetch" href="/blog/assets/js/14.eb559736.js"><link rel="prefetch" href="/blog/assets/js/15.beccba6e.js"><link rel="prefetch" href="/blog/assets/js/16.af5150ff.js"><link rel="prefetch" href="/blog/assets/js/17.dbf952d1.js"><link rel="prefetch" href="/blog/assets/js/18.c318f18c.js"><link rel="prefetch" href="/blog/assets/js/20.a057d148.js"><link rel="prefetch" href="/blog/assets/js/21.3b99ccf6.js"><link rel="prefetch" href="/blog/assets/js/22.ef7b4cd0.js"><link rel="prefetch" href="/blog/assets/js/23.e3a34ba1.js"><link rel="prefetch" href="/blog/assets/js/3.6eb4007c.js"><link rel="prefetch" href="/blog/assets/js/4.1b609518.js"><link rel="prefetch" href="/blog/assets/js/5.9e2f4ca7.js"><link rel="prefetch" href="/blog/assets/js/6.c7b54f12.js"><link rel="prefetch" href="/blog/assets/js/7.8a5eaf01.js"><link rel="prefetch" href="/blog/assets/js/8.bfde39e2.js"><link rel="prefetch" href="/blog/assets/js/9.7d91f5cb.js">
+    <link rel="stylesheet" href="/blog/assets/css/0.styles.0b1ac558.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/blog/" class="home-link router-link-active"><!----> <span class="site-name">shadow</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <!----></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><!---->  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><a href="/blog/blog/element/element" class="sidebar-heading clickable"><span>element相关</span> <!----></a> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog/blog/element/element.html" class="sidebar-link">穿透更改element</a></li></ul></section></li><li><section class="sidebar-group depth-0"><a href="/blog/blog/babel" class="sidebar-heading clickable"><span>babel相关</span> <!----></a> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog/blog/babel/babel-plugin-remove-module.html" class="sidebar-link">babel-plugin-remove-module</a></li><li><a href="/blog/blog/babel/babel-plugin-auto-report-error.html" class="sidebar-link">babel-plugin-auto-report-error</a></li></ul></section></li><li><section class="sidebar-group depth-0"><a href="/blog/blog/vue" class="sidebar-heading clickable router-link-active open"><span>vue源码相关</span> <!----></a> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog/blog/vue/vue2-lifecycle.html" class="sidebar-link">vue2-lifecycle源码解析</a></li><li><a href="/blog/blog/vue/vue2-computed.html" aria-current="page" class="active sidebar-link">vue2computed源码解析</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/blog/blog/vue/vue2-computed.html#computed-源码解析" class="sidebar-link">computed 源码解析</a></li></ul></li><li><a href="/blog/blog/vue/vue2-watch.html" class="sidebar-link">vue2watch源码解析</a></li><li><a href="/blog/blog/vue/vue2-$set.html" class="sidebar-link">vue2$set源码解析</a></li><li><a href="/blog/blog/vue/vue2-mixin.html" class="sidebar-link">vue2mixin合并策略解析</a></li><li><a href="/blog/blog/vue/vue2-vue3-reactive-compare.html" class="sidebar-link">vue2/vue3响应式变更对比</a></li></ul></section></li><li><section class="sidebar-group depth-0"><a href="/blog/blog/daily" class="sidebar-heading clickable"><span>日常记录</span> <!----></a> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog/blog/daily/build-optimization.html" class="sidebar-link">webpack打包优化</a></li><li><a href="/blog/blog/daily/control-request.html" class="sidebar-link">控制重复请求,并返回同段时间内的请求结果</a></li><li><a href="/blog/blog/daily/team-rule.html" class="sidebar-link">团队代码规范</a></li><li><a href="/blog/blog/daily/vue+docker+jenkins.html" class="sidebar-link">vue+docker+jenkins自动化部署</a></li><li><a href="/blog/blog/daily/whistle.html" class="sidebar-link">开发工具-whistle</a></li></ul></section></li><li><section class="sidebar-group depth-0"><a href="/blog/blog/ai" class="sidebar-heading clickable"><span>ai</span> <!----></a> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog/blog/ai/mcpServer.html" class="sidebar-link">开发mcp server</a></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h2 id="computed-源码解析"><a href="#computed-源码解析" class="header-anchor">#</a> computed 源码解析</h2> <h3 id="computed-的功能是什么"><a href="#computed-的功能是什么" class="header-anchor">#</a> computed 的功能是什么</h3> <p>官方解读: 计算属性的结果会被缓存，除非依赖的响应式 property 变化才会重新计算。注意，如果某个依赖 (比如非响应式 property) 在该实例范畴之外，则计算属性是不会被更新的. 我们可以看到 computed 的最大特嗲那就是响应式的 property 变化了才会进行重新计算,否则使用原始的值.</p> <h3 id="流程"><a href="#流程" class="header-anchor">#</a> 流程</h3> <div class="language-js extra-class"><pre class="language-js"><code><span class="token comment">// initState</span>
+<span class="token keyword">function</span> <span class="token function">initState</span><span class="token punctuation">(</span><span class="token parameter">vm</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  vm<span class="token punctuation">.</span>_watchers <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+  <span class="token keyword">var</span> opts <span class="token operator">=</span> vm<span class="token punctuation">.</span>$options<span class="token punctuation">;</span>
+  <span class="token comment">//   ... 省略无关代码</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>opts<span class="token punctuation">.</span>computed<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// 这里判断是否有computed参数,如果有则执行</span>
+    <span class="token function">initComputed</span><span class="token punctuation">(</span>vm<span class="token punctuation">,</span> opts<span class="token punctuation">.</span>computed<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token comment">// initComputed</span>
+<span class="token keyword">function</span> <span class="token function">initComputed</span><span class="token punctuation">(</span><span class="token parameter">vm<span class="token punctuation">,</span> computed</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">var</span> watchers <span class="token operator">=</span> <span class="token punctuation">(</span>vm<span class="token punctuation">.</span>_computedWatchers <span class="token operator">=</span> Object<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">var</span> key <span class="token keyword">in</span> computed<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">var</span> userDef <span class="token operator">=</span> computed<span class="token punctuation">[</span>key<span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token comment">//  从这里我们可以看出computed中的的写法可以是对象(如果是对象则需要提供getter/setter),可以是函数</span>
+    <span class="token keyword">var</span> getter <span class="token operator">=</span> <span class="token keyword">typeof</span> userDef <span class="token operator">===</span> <span class="token string">&quot;function&quot;</span> <span class="token operator">?</span> userDef <span class="token operator">:</span> userDef<span class="token punctuation">.</span>get<span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>getter <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token function">warn</span><span class="token punctuation">(</span><span class="token string">'Getter is missing for computed property &quot;'</span> <span class="token operator">+</span> key <span class="token operator">+</span> <span class="token string">'&quot;.'</span><span class="token punctuation">,</span> vm<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>isSSR<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token comment">// 实例化一个Watcher,你会发现不管是computed或者watch其实本质都是一个Watcher.</span>
+      watchers<span class="token punctuation">[</span>key<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Watcher</span><span class="token punctuation">(</span>
+        vm<span class="token punctuation">,</span>
+        getter <span class="token operator">||</span> noop<span class="token punctuation">,</span>
+        noop<span class="token punctuation">,</span>
+        computedWatcherOptions
+      <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// 这里key是否在实例上,不在的话调用defineComputed</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token punctuation">(</span>key <span class="token keyword">in</span> vm<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token function">defineComputed</span><span class="token punctuation">(</span>vm<span class="token punctuation">,</span> key<span class="token punctuation">,</span> userDef<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+      <span class="token comment">// 如果在data中有重复的key,则会提示有重复的key</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>key <span class="token keyword">in</span> vm<span class="token punctuation">.</span>$data<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">warn</span><span class="token punctuation">(</span>
+          <span class="token string">'The computed property &quot;'</span> <span class="token operator">+</span> key <span class="token operator">+</span> <span class="token string">'&quot; is already defined in data.'</span><span class="token punctuation">,</span>
+          vm
+        <span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token comment">// 如果在props中有重复的key,则会提示有重复的key</span>
+      <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>vm<span class="token punctuation">.</span>$options<span class="token punctuation">.</span>props <span class="token operator">&amp;&amp;</span> key <span class="token keyword">in</span> vm<span class="token punctuation">.</span>$options<span class="token punctuation">.</span>props<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">warn</span><span class="token punctuation">(</span>
+          <span class="token string">'The computed property &quot;'</span> <span class="token operator">+</span> key <span class="token operator">+</span> <span class="token string">'&quot; is already defined as a prop.'</span><span class="token punctuation">,</span>
+          vm
+        <span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token comment">/**
+ * defineComputed
+ * target {Object} vue的实例对象
+ * key {String} computed中定义的key
+ * userDef {Function|Object} computed中的value
+ */</span>
+<span class="token keyword">function</span> <span class="token function">defineComputed</span><span class="token punctuation">(</span><span class="token parameter">target<span class="token punctuation">,</span> key<span class="token punctuation">,</span> userDef</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">var</span> shouldCache <span class="token operator">=</span> <span class="token operator">!</span><span class="token function">isServerRendering</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token comment">/**
+   * 浏览器环境中执行createComputedGetter,这里执行完成之后返回的是一个函数,之后会被设置到getter中
+   */</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">typeof</span> userDef <span class="token operator">===</span> <span class="token string">&quot;function&quot;</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    sharedPropertyDefinition<span class="token punctuation">.</span>get <span class="token operator">=</span> shouldCache
+      <span class="token operator">?</span> <span class="token function">createComputedGetter</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span>
+      <span class="token operator">:</span> <span class="token function">createGetterInvoker</span><span class="token punctuation">(</span>userDef<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    sharedPropertyDefinition<span class="token punctuation">.</span>set <span class="token operator">=</span> noop<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+    sharedPropertyDefinition<span class="token punctuation">.</span>get <span class="token operator">=</span> userDef<span class="token punctuation">.</span>get
+      <span class="token operator">?</span> shouldCache <span class="token operator">&amp;&amp;</span> userDef<span class="token punctuation">.</span>cache <span class="token operator">!==</span> <span class="token boolean">false</span>
+        <span class="token operator">?</span> <span class="token function">createComputedGetter</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span>
+        <span class="token operator">:</span> <span class="token function">createGetterInvoker</span><span class="token punctuation">(</span>userDef<span class="token punctuation">.</span>get<span class="token punctuation">)</span>
+      <span class="token operator">:</span> noop<span class="token punctuation">;</span>
+    sharedPropertyDefinition<span class="token punctuation">.</span>set <span class="token operator">=</span> userDef<span class="token punctuation">.</span>set <span class="token operator">||</span> noop<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>sharedPropertyDefinition<span class="token punctuation">.</span>set <span class="token operator">===</span> noop<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    sharedPropertyDefinition<span class="token punctuation">.</span><span class="token function-variable function">set</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token function">warn</span><span class="token punctuation">(</span>
+        <span class="token string">'Computed property &quot;'</span> <span class="token operator">+</span> key <span class="token operator">+</span> <span class="token string">'&quot; was assigned to but it has no setter.'</span><span class="token punctuation">,</span>
+        <span class="token keyword">this</span>
+      <span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+  <span class="token comment">// 然后在对这个key进行监听</span>
+  Object<span class="token punctuation">.</span><span class="token function">defineProperty</span><span class="token punctuation">(</span>target<span class="token punctuation">,</span> key<span class="token punctuation">,</span> sharedPropertyDefinition<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token comment">// createComputedGetter,在访问this.computed[key]的属性会触发.</span>
+<span class="token keyword">function</span> <span class="token function">createComputedGetter</span><span class="token punctuation">(</span><span class="token parameter">key</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">return</span> <span class="token keyword">function</span> <span class="token function">computedGetter</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">var</span> watcher <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>_computedWatchers <span class="token operator">&amp;&amp;</span> <span class="token keyword">this</span><span class="token punctuation">.</span>_computedWatchers<span class="token punctuation">[</span>key<span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>watcher<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token comment">// 这里很关键,首次读取的时候dirty是true默认会去求值一次.之后如果数据没有变更的时候dirty就会一直为false,就不会进行重新求值,这就是computed有缓存的原因</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>watcher<span class="token punctuation">.</span>dirty<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// 这里的evaluate会调用watcher的get,也就是下面的代码段</span>
+        watcher<span class="token punctuation">.</span><span class="token function">evaluate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 看以下代码段</span>
+      <span class="token punctuation">}</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>Dep<span class="token punctuation">.</span>target<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        watcher<span class="token punctuation">.</span><span class="token function">depend</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+      <span class="token keyword">return</span> watcher<span class="token punctuation">.</span>value<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token class-name">Watcher</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">evaluate</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token function">evaluate</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span>value <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 求值</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span>dirty <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span> <span class="token comment">// 把dirty标志设为false,如果数据不变动则不会重新求值.只有在setter重新赋值的时候会再次把dirty设置为true</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token class-name">Watcher</span><span class="token punctuation">.</span>prototype<span class="token punctuation">.</span><span class="token function-variable function">get</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token function">pushTarget</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">var</span> value<span class="token punctuation">;</span>
+  <span class="token keyword">var</span> vm <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>vm<span class="token punctuation">;</span>
+  <span class="token keyword">try</span> <span class="token punctuation">{</span>
+    value <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">getter</span><span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span>vm<span class="token punctuation">,</span> vm<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// 这里会调用computed中定义的getter</span>
+  <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span>e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>user<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token function">handleError</span><span class="token punctuation">(</span>e<span class="token punctuation">,</span> vm<span class="token punctuation">,</span> <span class="token string">'getter for watcher &quot;'</span> <span class="token operator">+</span> <span class="token keyword">this</span><span class="token punctuation">.</span>expression <span class="token operator">+</span> <span class="token string">'&quot;'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+      <span class="token keyword">throw</span> e<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span> <span class="token keyword">finally</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>deep<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token function">traverse</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token function">popTarget</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">cleanupDeps</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">return</span> value<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+</code></pre></div><h3 id="总结-computed-的缓存原理就是判断在-watcher-dirty-的属性是否为-true-如果是则重新求值-否则就还是使用旧数据"><a href="#总结-computed-的缓存原理就是判断在-watcher-dirty-的属性是否为-true-如果是则重新求值-否则就还是使用旧数据" class="header-anchor">#</a> 总结,computed 的缓存原理就是判断在 Watcher.dirty 的属性是否为 true,如果是则重新求值,否则就还是使用旧数据</h3></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/blog/blog/vue/vue2-lifecycle.html" class="prev">
+        vue2-lifecycle源码解析
+      </a></span> <span class="next"><a href="/blog/blog/vue/vue2-watch.html">
+        vue2watch源码解析
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/blog/assets/js/app.faaa4d6f.js" defer></script><script src="/blog/assets/js/2.50ac7f95.js" defer></script><script src="/blog/assets/js/19.42fddf42.js" defer></script>
+  </body>
+</html>

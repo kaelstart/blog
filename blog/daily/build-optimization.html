@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>webpack 打包优化 | shadow</title>
+    <meta name="generator" content="VuePress 1.9.7">
+    
+    <meta name="description" content="Just playing around">
+    
+    <link rel="preload" href="/blog/assets/css/0.styles.0b1ac558.css" as="style"><link rel="preload" href="/blog/assets/js/app.faaa4d6f.js" as="script"><link rel="preload" href="/blog/assets/js/2.50ac7f95.js" as="script"><link rel="preload" href="/blog/assets/js/11.e907298b.js" as="script"><link rel="prefetch" href="/blog/assets/js/10.d206cb63.js"><link rel="prefetch" href="/blog/assets/js/12.136eb064.js"><link rel="prefetch" href="/blog/assets/js/13.3e9ac2b3.js"><link rel="prefetch" href="/blog/assets/js/14.eb559736.js"><link rel="prefetch" href="/blog/assets/js/15.beccba6e.js"><link rel="prefetch" href="/blog/assets/js/16.af5150ff.js"><link rel="prefetch" href="/blog/assets/js/17.dbf952d1.js"><link rel="prefetch" href="/blog/assets/js/18.c318f18c.js"><link rel="prefetch" href="/blog/assets/js/19.42fddf42.js"><link rel="prefetch" href="/blog/assets/js/20.a057d148.js"><link rel="prefetch" href="/blog/assets/js/21.3b99ccf6.js"><link rel="prefetch" href="/blog/assets/js/22.ef7b4cd0.js"><link rel="prefetch" href="/blog/assets/js/23.e3a34ba1.js"><link rel="prefetch" href="/blog/assets/js/3.6eb4007c.js"><link rel="prefetch" href="/blog/assets/js/4.1b609518.js"><link rel="prefetch" href="/blog/assets/js/5.9e2f4ca7.js"><link rel="prefetch" href="/blog/assets/js/6.c7b54f12.js"><link rel="prefetch" href="/blog/assets/js/7.8a5eaf01.js"><link rel="prefetch" href="/blog/assets/js/8.bfde39e2.js"><link rel="prefetch" href="/blog/assets/js/9.7d91f5cb.js">
+    <link rel="stylesheet" href="/blog/assets/css/0.styles.0b1ac558.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/blog/" class="home-link router-link-active"><!----> <span class="site-name">shadow</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <!----></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><!---->  <ul class="sidebar-links"><li><section class="sidebar-group depth-0"><a href="/blog/blog/element/element" class="sidebar-heading clickable"><span>element相关</span> <!----></a> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog/blog/element/element.html" class="sidebar-link">穿透更改element</a></li></ul></section></li><li><section class="sidebar-group depth-0"><a href="/blog/blog/babel" class="sidebar-heading clickable"><span>babel相关</span> <!----></a> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog/blog/babel/babel-plugin-remove-module.html" class="sidebar-link">babel-plugin-remove-module</a></li><li><a href="/blog/blog/babel/babel-plugin-auto-report-error.html" class="sidebar-link">babel-plugin-auto-report-error</a></li></ul></section></li><li><section class="sidebar-group depth-0"><a href="/blog/blog/vue" class="sidebar-heading clickable"><span>vue源码相关</span> <!----></a> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog/blog/vue/vue2-lifecycle.html" class="sidebar-link">vue2-lifecycle源码解析</a></li><li><a href="/blog/blog/vue/vue2-computed.html" class="sidebar-link">vue2computed源码解析</a></li><li><a href="/blog/blog/vue/vue2-watch.html" class="sidebar-link">vue2watch源码解析</a></li><li><a href="/blog/blog/vue/vue2-$set.html" class="sidebar-link">vue2$set源码解析</a></li><li><a href="/blog/blog/vue/vue2-mixin.html" class="sidebar-link">vue2mixin合并策略解析</a></li><li><a href="/blog/blog/vue/vue2-vue3-reactive-compare.html" class="sidebar-link">vue2/vue3响应式变更对比</a></li></ul></section></li><li><section class="sidebar-group depth-0"><a href="/blog/blog/daily" class="sidebar-heading clickable router-link-active open"><span>日常记录</span> <!----></a> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog/blog/daily/build-optimization.html" aria-current="page" class="active sidebar-link">webpack打包优化</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/blog/blog/daily/build-optimization.html#webpack-打包优化" class="sidebar-link">webpack 打包优化</a></li><li class="sidebar-sub-header"><a href="/blog/blog/daily/build-optimization.html#背景" class="sidebar-link">背景</a></li><li class="sidebar-sub-header"><a href="/blog/blog/daily/build-optimization.html#优化后的效果" class="sidebar-link">优化后的效果</a></li><li class="sidebar-sub-header"><a href="/blog/blog/daily/build-optimization.html#问题点" class="sidebar-link">问题点</a></li><li class="sidebar-sub-header"><a href="/blog/blog/daily/build-optimization.html#解决" class="sidebar-link">解决</a></li></ul></li><li><a href="/blog/blog/daily/control-request.html" class="sidebar-link">控制重复请求,并返回同段时间内的请求结果</a></li><li><a href="/blog/blog/daily/team-rule.html" class="sidebar-link">团队代码规范</a></li><li><a href="/blog/blog/daily/vue+docker+jenkins.html" class="sidebar-link">vue+docker+jenkins自动化部署</a></li><li><a href="/blog/blog/daily/whistle.html" class="sidebar-link">开发工具-whistle</a></li></ul></section></li><li><section class="sidebar-group depth-0"><a href="/blog/blog/ai" class="sidebar-heading clickable"><span>ai</span> <!----></a> <ul class="sidebar-links sidebar-group-items"><li><a href="/blog/blog/ai/mcpServer.html" class="sidebar-link">开发mcp server</a></li></ul></section></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h2 id="webpack-打包优化"><a href="#webpack-打包优化" class="header-anchor">#</a> webpack 打包优化</h2> <h2 id="背景"><a href="#背景" class="header-anchor">#</a> 背景</h2> <p>某天在开发完成一个功能的时候推到远程仓库(已 CICD),发现代码久久没有生效.去构建仓库有收到报警,代码构建失败.当我去查看构建详情的时候,发现构建时长高达 15 分钟,并且出现爆栈的情况.当出现这种情况,我的内心是欢乐的,因为终于可以对这个项目进行优化了.</p> <h2 id="优化后的效果"><a href="#优化后的效果" class="header-anchor">#</a> 优化后的效果</h2> <h3 id="未优化"><a href="#未优化" class="header-anchor">#</a> 未优化:</h3> <p><img src="https://i.bmp.ovh/imgs/2022/06/10/b886c57ab85aa08e.png" alt="image"> <img src="https://i.bmp.ovh/imgs/2022/06/10/c6ee66a875ec71a8.png" alt="image"></p> <h3 id="优化过后"><a href="#优化过后" class="header-anchor">#</a> 优化过后:</h3> <p><img src="https://s3.bmp.ovh/imgs/2022/06/10/c1a028228de61ed2.png" alt="image"> <img src="https://s3.bmp.ovh/imgs/2022/06/10/ac80a5251bb7cf1f.png" alt="image"></p> <p>可以看到体积减少了 70%左右,打包时间减少了 20%.那么我是怎么优化的呢?现在来揭晓吧</p> <h2 id="问题点"><a href="#问题点" class="header-anchor">#</a> 问题点</h2> <p>首先我们先看一下这个项目有什么问题</p> <ol><li>打包时间过长(本地 build 高达 4 分钟)</li> <li>占用内存过高,并且会出现爆栈的情况</li> <li>项目打包完成之后的体积过大</li> <li>项目历经时间过长,项目复杂,并且几乎没怎么优化.</li></ol> <p>由于这个项目是用 vuecli 创建的,那么我们先来看看 vuecli 默认做了哪些优化</p> <div class="language-js extra-class"><pre class="language-js"><code><span class="token comment">// 用于查看当前的配置</span>
+vue inspect <span class="token operator">&gt;</span> output<span class="token punctuation">.</span>js
+</code></pre></div><div class="language-js extra-class"><pre class="language-js"><code><span class="token comment">// 这里抽取了部分优化的逻辑</span>
+<span class="token punctuation">{</span>
+    <span class="token literal-property property">module</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token literal-property property">noParse</span><span class="token operator">:</span> <span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">^(vue|vue-router|vuex|vuex-router-sync)$</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">,</span>
+    <span class="token literal-property property">rules</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token comment">/* config.module.rule('vue') */</span>
+      <span class="token punctuation">{</span>
+        <span class="token literal-property property">test</span><span class="token operator">:</span> <span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">\.vue$</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">,</span>
+        <span class="token literal-property property">use</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+          <span class="token comment">/* config.module.rule('vue').use('cache-loader') */</span>
+          <span class="token punctuation">{</span>
+            <span class="token literal-property property">loader</span><span class="token operator">:</span> <span class="token string">'/Users/zhangwenxiong/shadow/pagoda-project/ziying-admin/opGoodsWebPC/node_modules/cache-loader/dist/cjs.js'</span><span class="token punctuation">,</span>
+            <span class="token literal-property property">options</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+              <span class="token literal-property property">cacheDirectory</span><span class="token operator">:</span> <span class="token string">'/Users/zhangwenxiong/shadow/pagoda-project/ziying-admin/opGoodsWebPC/node_modules/.cache/vue-loader'</span><span class="token punctuation">,</span>
+              <span class="token literal-property property">cacheIdentifier</span><span class="token operator">:</span> <span class="token string">'3ba684b6'</span>
+            <span class="token punctuation">}</span>
+          <span class="token punctuation">}</span><span class="token punctuation">,</span>
+          <span class="token comment">/* config.module.rule('vue').use('vue-loader') */</span>
+          <span class="token punctuation">{</span>
+            <span class="token literal-property property">loader</span><span class="token operator">:</span> <span class="token string">'/Users/zhangwenxiong/shadow/pagoda-project/ziying-admin/opGoodsWebPC/node_modules/vue-loader/lib/index.js'</span><span class="token punctuation">,</span>
+            <span class="token literal-property property">options</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+              <span class="token literal-property property">compilerOptions</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+                <span class="token literal-property property">whitespace</span><span class="token operator">:</span> <span class="token string">'condense'</span>
+              <span class="token punctuation">}</span><span class="token punctuation">,</span>
+              <span class="token literal-property property">cacheDirectory</span><span class="token operator">:</span> <span class="token string">'/Users/zhangwenxiong/shadow/pagoda-project/ziying-admin/opGoodsWebPC/node_modules/.cache/vue-loader'</span><span class="token punctuation">,</span>
+              <span class="token literal-property property">cacheIdentifier</span><span class="token operator">:</span> <span class="token string">'3ba684b6'</span>
+            <span class="token punctuation">}</span>
+          <span class="token punctuation">}</span>
+        <span class="token punctuation">]</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+       <span class="token comment">/* config.module.rule('js') */</span>
+      <span class="token punctuation">{</span>
+        <span class="token literal-property property">test</span><span class="token operator">:</span> <span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">\.m?jsx?$</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">,</span>
+        <span class="token literal-property property">exclude</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+          <span class="token keyword">function</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token comment">/* omitted long function */</span> <span class="token punctuation">}</span>
+        <span class="token punctuation">]</span><span class="token punctuation">,</span>
+        <span class="token literal-property property">use</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+          <span class="token comment">/* config.module.rule('js').use('cache-loader') */</span>
+          <span class="token punctuation">{</span>
+            <span class="token literal-property property">loader</span><span class="token operator">:</span> <span class="token string">'/Users/zhangwenxiong/shadow/pagoda-project/ziying-admin/opGoodsWebPC/node_modules/cache-loader/dist/cjs.js'</span><span class="token punctuation">,</span>
+            <span class="token literal-property property">options</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+              <span class="token literal-property property">cacheDirectory</span><span class="token operator">:</span> <span class="token string">'/Users/zhangwenxiong/shadow/pagoda-project/ziying-admin/opGoodsWebPC/node_modules/.cache/babel-loader'</span><span class="token punctuation">,</span>
+              <span class="token literal-property property">cacheIdentifier</span><span class="token operator">:</span> <span class="token string">'3045f688'</span>
+            <span class="token punctuation">}</span>
+          <span class="token punctuation">}</span><span class="token punctuation">,</span>
+          <span class="token comment">/* config.module.rule('js').use('babel-loader') */</span>
+          <span class="token punctuation">{</span>
+            <span class="token literal-property property">loader</span><span class="token operator">:</span> <span class="token string">'/Users/zhangwenxiong/shadow/pagoda-project/ziying-admin/opGoodsWebPC/node_modules/babel-loader/lib/index.js'</span>
+          <span class="token punctuation">}</span>
+        <span class="token punctuation">]</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">]</span>
+<span class="token punctuation">}</span><span class="token punctuation">,</span>
+ <span class="token literal-property property">optimization</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token literal-property property">splitChunks</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token literal-property property">cacheGroups</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        <span class="token literal-property property">vendors</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+          <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token string">'chunk-vendors'</span><span class="token punctuation">,</span>
+          <span class="token literal-property property">test</span><span class="token operator">:</span> <span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">[\\/]node_modules[\\/]</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">,</span>
+          <span class="token literal-property property">priority</span><span class="token operator">:</span> <span class="token operator">-</span><span class="token number">10</span><span class="token punctuation">,</span>
+          <span class="token literal-property property">chunks</span><span class="token operator">:</span> <span class="token string">'initial'</span>
+        <span class="token punctuation">}</span><span class="token punctuation">,</span>
+        <span class="token literal-property property">common</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+          <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token string">'chunk-common'</span><span class="token punctuation">,</span>
+          <span class="token literal-property property">minChunks</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+          <span class="token literal-property property">priority</span><span class="token operator">:</span> <span class="token operator">-</span><span class="token number">20</span><span class="token punctuation">,</span>
+          <span class="token literal-property property">chunks</span><span class="token operator">:</span> <span class="token string">'initial'</span><span class="token punctuation">,</span>
+          <span class="token literal-property property">reuseExistingChunk</span><span class="token operator">:</span> <span class="token boolean">true</span>
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">minimizer</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+      <span class="token comment">/* config.optimization.minimizer('terser') */</span>
+      <span class="token keyword">new</span> <span class="token class-name">TerserPlugin</span><span class="token punctuation">(</span>
+        <span class="token punctuation">{</span>
+          <span class="token literal-property property">terserOptions</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+            <span class="token literal-property property">compress</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+              <span class="token literal-property property">arrows</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+              <span class="token literal-property property">collapse_vars</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+              <span class="token literal-property property">comparisons</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+              <span class="token literal-property property">computed_props</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+              <span class="token literal-property property">hoist_funs</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+              <span class="token literal-property property">hoist_props</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+              <span class="token literal-property property">hoist_vars</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+              <span class="token literal-property property">inline</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+              <span class="token literal-property property">loops</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+              <span class="token literal-property property">negate_iife</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+              <span class="token literal-property property">properties</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+              <span class="token literal-property property">reduce_funcs</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+              <span class="token literal-property property">reduce_vars</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+              <span class="token literal-property property">switches</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+              <span class="token literal-property property">toplevel</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+              <span class="token literal-property property">typeofs</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+              <span class="token literal-property property">booleans</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+              <span class="token literal-property property">if_return</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+              <span class="token literal-property property">sequences</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+              <span class="token literal-property property">unused</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+              <span class="token literal-property property">conditionals</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+              <span class="token literal-property property">dead_code</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+              <span class="token literal-property property">evaluate</span><span class="token operator">:</span> <span class="token boolean">true</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            <span class="token literal-property property">mangle</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+              <span class="token literal-property property">safari10</span><span class="token operator">:</span> <span class="token boolean">true</span>
+            <span class="token punctuation">}</span>
+          <span class="token punctuation">}</span><span class="token punctuation">,</span>
+          <span class="token literal-property property">sourceMap</span><span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+          <span class="token literal-property property">cache</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+          <span class="token literal-property property">parallel</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+          <span class="token literal-property property">extractComments</span><span class="token operator">:</span> <span class="token boolean">false</span>
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">)</span>
+    <span class="token punctuation">]</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+</code></pre></div><p>从上面可以看到,webpack 优化策略中的常客<code>cache-loader</code>,<code>terser</code>等插件都用上了.而分包优化则使用的是 webpack 默认的分包策略,这样我们还不是很好的定位问题.所以我们就搭配一些插件来查看我们的打包出现的问题吧.</p> <div class="language-js extra-class"><pre class="language-js"><code>yarn add speed<span class="token operator">-</span>measure<span class="token operator">-</span>webpack<span class="token operator">-</span>plugin <span class="token operator">-</span><span class="token constant">D</span>
+</code></pre></div><p>这个插件可以测量各个插件和 loader 所花费的时间</p> <div class="language-js extra-class"><pre class="language-js"><code>yarn add webpack<span class="token operator">-</span>bundle<span class="token operator">-</span>analyzer <span class="token operator">-</span><span class="token constant">D</span>
+</code></pre></div><p>这个插件可以查看打包之后各个 chunk 的体积大小,它的 UI 页面可以很清晰的展示出 chunk 的信息.</p> <p>然后再打包看看</p> <div class="language-js extra-class"><pre class="language-js"><code>yarn build
+</code></pre></div><p>再通过插件来查看本次打包的信息
+<img src="https://s3.bmp.ovh/imgs/2022/06/11/b746c23858bedc59.jpg" alt="images"></p> <p>通过上图可以看到几乎每个 chunk 都高达 500kb,这个时候我就会想为什么每个 chunk 都会这么大呢?是不是有一些公共代码没有被分割出来,于是乎我就去搜索了我们仓库中一些常用到的公共的代码,发现果然如此.</p> <p><img src="https://s3.bmp.ovh/imgs/2022/06/11/5f774cfbf2456c2d.jpg" alt="images">
+那么这个问题就比较好解决了,那就是 webpack 的分包策略出了问题.可以根据<code>optimization.splitChunks</code>来进行优化.</p> <p>接着我们在去查看一些公共的第三方库,由于我们项目中用了 moment.js,当我去搜索 moment.js 的时候,发现很多语言都被打包进来了.
+<img src="https://s3.bmp.ovh/imgs/2022/06/11/86c7e64bcfa1d474.jpg" alt="images">.这也是一个问题</p> <h2 id="解决"><a href="#解决" class="header-anchor">#</a> 解决</h2> <ol><li>分包</li></ol> <p>经过我的调试,下面的分包策略在我们的项目收益比较大</p> <ol start="2"><li>moment.js</li></ol> <p>安装<code>moment-locales-webpack-plugin</code>插件,来移除一些不必要的语言,进行按需引入.</p> <p>最终配置</p> <div class="language-js extra-class"><pre class="language-js"><code> <span class="token function-variable function">configureWebpack</span><span class="token operator">:</span> <span class="token punctuation">(</span><span class="token parameter">config</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> plugins <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+    <span class="token comment">// build</span>
+    plugins<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">SpeedMeasurePlugin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">BundleAnalyzerPlugin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token comment">// 去除moment一些不必要的语言</span>
+    plugins<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>
+      <span class="token keyword">new</span> <span class="token class-name">MomentLocalesPlugin</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+        <span class="token literal-property property">localesToKeep</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">'zh-cn'</span><span class="token punctuation">]</span>
+      <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token punctuation">)</span>
+    config<span class="token punctuation">.</span>optimization <span class="token operator">=</span> <span class="token punctuation">{</span> <span class="token literal-property property">splitChunks</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+         <span class="token literal-property property">cacheGroups</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token literal-property property">common</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token string">&quot;chunk-common&quot;</span><span class="token punctuation">,</span>
+      <span class="token comment">// 公共模块采用all</span>
+      <span class="token literal-property property">chunks</span><span class="token operator">:</span> <span class="token string">&quot;all&quot;</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">minChunks</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">minSize</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+      <span class="token comment">// 优先级高</span>
+      <span class="token literal-property property">priority</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">reuseExistingChunk</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">enforce</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">vendors</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token string">&quot;chunk-vendors&quot;</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">test</span><span class="token operator">:</span> <span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">[\\/]node_modules[\\/]</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">,</span>
+      <span class="token literal-property property">minChunks</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">minSize</span><span class="token operator">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">priority</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">chunks</span><span class="token operator">:</span> <span class="token string">&quot;initial&quot;</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">reuseExistingChunk</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">enforce</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">vue</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token string">&quot;chunk-vue&quot;</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">test</span><span class="token operator">:</span> <span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">[\\/]node_modules[\\/]vue[\\/]</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">,</span>
+      <span class="token literal-property property">priority</span><span class="token operator">:</span> <span class="token number">3</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">reuseExistingChunk</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">enforce</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">vuex</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token string">&quot;chunk-vuex&quot;</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">test</span><span class="token operator">:</span> <span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">[\\/]node_modules[\\/]vuex[\\/]</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">,</span>
+      <span class="token literal-property property">priority</span><span class="token operator">:</span> <span class="token number">3</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">reuseExistingChunk</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">enforce</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token string-property property">&quot;vue-router&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token string">&quot;chunk-vue-router&quot;</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">test</span><span class="token operator">:</span> <span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">[\\/]node_modules[\\/]vue-router[\\/]</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">,</span>
+      <span class="token literal-property property">chunks</span><span class="token operator">:</span> <span class="token string">&quot;all&quot;</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">priority</span><span class="token operator">:</span> <span class="token number">3</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">reuseExistingChunk</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">enforce</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token string-property property">&quot;element-ui&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token string">&quot;chunk-element-ui&quot;</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">test</span><span class="token operator">:</span> <span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">[\\/]node_modules[\\/]element-ui[\\/]</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">,</span>
+      <span class="token literal-property property">chunks</span><span class="token operator">:</span> <span class="token string">&quot;all&quot;</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">priority</span><span class="token operator">:</span> <span class="token number">7</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">reuseExistingChunk</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">enforce</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">wangeditor</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token string">&quot;chunk-wangeditor&quot;</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">test</span><span class="token operator">:</span> <span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">[\\/]node_modules[\\/]wangeditor[\\/]</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">,</span>
+      <span class="token literal-property property">chunks</span><span class="token operator">:</span> <span class="token string">&quot;all&quot;</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">priority</span><span class="token operator">:</span> <span class="token number">9</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">reuseExistingChunk</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">enforce</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">lodash</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token string">&quot;chunk-lodash&quot;</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">test</span><span class="token operator">:</span> <span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">[\\/]node_modules[\\/]lodash[\\/]</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">,</span>
+      <span class="token literal-property property">chunks</span><span class="token operator">:</span> <span class="token string">&quot;all&quot;</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">priority</span><span class="token operator">:</span> <span class="token number">9</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">reuseExistingChunk</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">enforce</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">moment</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token string">&quot;chunk-moment&quot;</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">test</span><span class="token operator">:</span> <span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">[\\/]node_modules[\\/]moment[\\/]</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">,</span>
+      <span class="token literal-property property">chunks</span><span class="token operator">:</span> <span class="token string">&quot;all&quot;</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">priority</span><span class="token operator">:</span> <span class="token number">9</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">reuseExistingChunk</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">enforce</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">dayjs</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token string">&quot;chunk-moment&quot;</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">test</span><span class="token operator">:</span> <span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">[\\/]node_modules[\\/]dayjs[\\/]</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">,</span>
+      <span class="token literal-property property">chunks</span><span class="token operator">:</span> <span class="token string">&quot;all&quot;</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">priority</span><span class="token operator">:</span> <span class="token number">9</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">reuseExistingChunk</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">enforce</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">numeral</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token string">&quot;chunk-numeral&quot;</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">test</span><span class="token operator">:</span> <span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">[\\/]src[\\/]utils[\\/]numeral[\\/]</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">,</span>
+      <span class="token literal-property property">chunks</span><span class="token operator">:</span> <span class="token string">&quot;all&quot;</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">priority</span><span class="token operator">:</span> <span class="token number">9</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">reuseExistingChunk</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">enforce</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">pinyin4js</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token string">&quot;chunk-moment&quot;</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">test</span><span class="token operator">:</span> <span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">[\\/]node_modules[\\/]pinyin4js[\\/]</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">,</span>
+      <span class="token literal-property property">chunks</span><span class="token operator">:</span> <span class="token string">&quot;all&quot;</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">priority</span><span class="token operator">:</span> <span class="token number">9</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">reuseExistingChunk</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">enforce</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token literal-property property">axios</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+      <span class="token literal-property property">name</span><span class="token operator">:</span> <span class="token string">&quot;chunk-axios&quot;</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">test</span><span class="token operator">:</span> <span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">[\\/]node_modules[\\/]axios[\\/]</span><span class="token regex-delimiter">/</span></span><span class="token punctuation">,</span>
+      <span class="token literal-property property">chunks</span><span class="token operator">:</span> <span class="token string">&quot;all&quot;</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">priority</span><span class="token operator">:</span> <span class="token number">9</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">reuseExistingChunk</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+      <span class="token literal-property property">enforce</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span> <span class="token punctuation">}</span>
+    <span class="token comment">// 这里noParse,我剔除了一些不需要webpack进行打包解析的三方库.</span>
+    config<span class="token punctuation">.</span>module<span class="token punctuation">.</span>noParse <span class="token operator">=</span>
+      <span class="token regex"><span class="token regex-delimiter">/</span><span class="token regex-source language-regex">^(vue|vue-router|vuex|vuex-router-sync|element-ui|lodash|wangeditor|dayjs|axios|moment|sortablejs)$</span><span class="token regex-delimiter">/</span></span>
+    config<span class="token punctuation">.</span>plugins <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token operator">...</span>config<span class="token punctuation">.</span>plugins<span class="token punctuation">,</span> <span class="token operator">...</span>plugins<span class="token punctuation">]</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+</code></pre></div><p>以上的优化手段减少了打包体积70%,打包时间减少了20%.暂时觉得够用了,以后还有其他的性能优化手段再进行优化.</p></div> <footer class="page-edit"><!----> <!----></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/blog/blog/vue/vue2-vue3-reactive-compare.html" class="prev">
+        vue2/vue3响应式变更对比
+      </a></span> <span class="next"><a href="/blog/blog/daily/control-request.html">
+        控制重复请求,并返回同段时间内的请求结果
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/blog/assets/js/app.faaa4d6f.js" defer></script><script src="/blog/assets/js/2.50ac7f95.js" defer></script><script src="/blog/assets/js/11.e907298b.js" defer></script>
+  </body>
+</html>
